@@ -26,11 +26,22 @@ export const Gameboard = () => {
             setCurrentPlayer("red")
         }
     }
+    
+    //Places the piece as low as possible
+    const placeToken = (rowIndex: number, currentPlayer: string): void => {
+        for(let lowestColumn = 6; lowestColumn >= 0; lowestColumn--){
+            if(board[rowIndex][lowestColumn] === ""){
+                updateBoard(rowIndex, lowestColumn, currentPlayer)
+                break
+            }
+        }
+    }
+
 
     const onTileClick = (rowIndex: number, columnIndex: number): void => {
         //Check if tile is empty
         if(board[rowIndex][columnIndex] === ""){
-            updateBoard(rowIndex, columnIndex, currentPlayer)
+            placeToken(rowIndex, currentPlayer)
             toggleColor();
         }
         console.log("Clicked! Row: " + rowIndex, columnIndex)
