@@ -13,22 +13,39 @@
   border-radius: 60px;
   margin: 5px;
   background-color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.inner{
+  min-width: 50px;
+  max-height: 50px;
+  margin-top: 10px;
+  border-radius: 30px;
 }
 
 .red{
   background-color: red;
 }
 
+.inner-red{
+  background-color: rgb(189, 14, 14);
+}
+
 .yellow{
   background-color: yellow;
+}
+
+.inner-yellow{
+  background-color: rgba(192, 192, 31, 0.384);
 }
 
 #gameboard{
   display: flex;
   justify-content: center;
   background-color: rgb(50, 144, 221);
-  width: 700px;
-  height: 600px;
+  width: 600px;
+  height: 500px;
   padding: 20px;
   
 }
