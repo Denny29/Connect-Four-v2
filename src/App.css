@@ -3,6 +3,8 @@
   padding: 2rem;
   text-align: center;
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .tile{
@@ -28,6 +30,7 @@
   width: 700px;
   height: 600px;
   padding: 20px;
+  
 }
 
 .rows{

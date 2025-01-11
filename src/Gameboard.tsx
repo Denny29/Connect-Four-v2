@@ -4,8 +4,10 @@ import { Tile } from "./tile";
 export const Gameboard = () => {
     
     //Board contains the colors of the tiles
+    let rows = 7
+    let columns = 6
     const [board, setBoard] = useState<string[][]>(
-        Array.from({ length: 6 }, () => Array(7).fill(""))
+        Array.from({ length: rows }, () => Array(columns).fill(""))
     )
     //Current player/color
     const [currentPlayer, setCurrentPlayer] = useState("red")
@@ -29,7 +31,7 @@ export const Gameboard = () => {
     
     //Places the piece as low as possible
     const placeToken = (rowIndex: number, currentPlayer: string): void => {
-        for(let lowestColumn = 6; lowestColumn >= 0; lowestColumn--){
+        for(let lowestColumn = 5; lowestColumn >= 0; lowestColumn--){
             if(board[rowIndex][lowestColumn] === ""){
                 updateBoard(rowIndex, lowestColumn, currentPlayer)
                 break
@@ -37,6 +39,10 @@ export const Gameboard = () => {
         }
     }
 
+
+    // const checkForWin = () => {
+
+    // }
 
     const onTileClick = (rowIndex: number, columnIndex: number): void => {
         //Check if tile is empty
@@ -50,10 +56,9 @@ export const Gameboard = () => {
 
     console.log(board)
 
-
-
     return (
-        <div id="gameboard">
+        <>
+            <div id="gameboard">
             {
                 board.map((rows, rowIndex) => {
                     return <div className="rows">
@@ -66,6 +71,9 @@ export const Gameboard = () => {
                     </div>
                 })
             }
-        </div>
+            
+            </div>
+            {/* <h1>Current Player: {currentPlayer}</h1> */}
+        </>
     )
 }
