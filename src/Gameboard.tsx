@@ -4,13 +4,15 @@ import { Tile } from "./tile";
 export const Gameboard = () => {
     
     //Board contains the colors of the tiles
-    let rows = 7
-    let columns = 6
+    let totalRows = 7
+    let totalColumns = 6
     const [board, setBoard] = useState<string[][]>(
-        Array.from({ length: rows }, () => Array(columns).fill(""))
+        Array.from({ length: totalRows }, () => Array(totalColumns).fill(""))
     )
     //Current player/color
     const [currentPlayer, setCurrentPlayer] = useState("red")
+
+    const [gameOver, setGameOver] = useState(false)
 
     //Helper method to change items in the board array
     const updateBoard = (rowIndex: number, columnIndex: number, color: string) => {
@@ -30,38 +32,73 @@ export const Gameboard = () => {
     }
     
     //Places the piece as low as possible
-    const placeToken = (rowIndex: number, currentPlayer: string): void => {
-        for(let lowestColumn = 5; lowestColumn >= 0; lowestColumn--){
+    const placeToken = (rowIndex: number, currentPlayer: string): number => {
+        let lowestColumn: number
+        for(lowestColumn = 5; lowestColumn >= 0; lowestColumn--){
             if(board[rowIndex][lowestColumn] === ""){
                 updateBoard(rowIndex, lowestColumn, currentPlayer)
-                break
+                return lowestColumn
             }
         }
+        return lowestColumn
+        console.log('Placed token: Row: ', rowIndex, 'Column: ', lowestColumn)
+    }
+
+    const checkForMatch = (rowIndex: number, columnIndex: number): boolean => {
+        if(board[rowIndex][columnIndex] === currentPlayer){
+            return true
+        }
+        return false
     }
 
 
-    // const checkForWin = () => {
 
-    // }
+    /**
+     * Upon clicking a tile this method will look
+     * three spaces around said tile and check if
+     * there is a match.
+     * Lets have it return true if so
+     */
+    const checkForWin = (rowIndex: number, columnIndex: number): boolean => {
+    
+        let numOfMatches = 0;
+
+        //horizontal checks:
+        //Check left of clicked tile
+        let columsChecked = 0;
+        while(columnIndex - columsChecked > 0){
+            if(checkForWin(rowIndex, columnIndex)){
+                numOfMatches++
+            }
+            columsChecked++;
+            if(columsChecked === 3)
+                break
+        }
+        //Check right of clicked tile
+
+        console.log(numOfMatches)
+        return false
+    }
 
     const onTileClick = (rowIndex: number, columnIndex: number): void => {
         //Check if tile is empty
         if(board[rowIndex][columnIndex] === ""){
-            placeToken(rowIndex, currentPlayer)
-            toggleColor();
+            if(!gameOver){
+                let actualColumnIndex = placeToken(rowIndex, currentPlayer)
+                // checkForWin(rowIndex, actualColumnIndex)
+                toggleColor();
+            }
         }
-        console.log("Clicked! Row: " + rowIndex, columnIndex)
+        console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
     }
 
-
-    console.log(board)
 
     return (
         <>
             <div id="gameboard">
             {
                 board.map((rows, rowIndex) => {
-                    return <div className="rows">
+                    return <div key={`row-${rowIndex}`} className="rows">
                         {rows.map((color, columnIndex) => {
                             return <Tile 
                             key={`${rowIndex}-${columnIndex}`} 
