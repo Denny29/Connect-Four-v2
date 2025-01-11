@@ -33,15 +33,15 @@ export const Gameboard = () => {
     
     //Places the piece as low as possible
     const placeToken = (rowIndex: number, currentPlayer: string): number => {
-        let lowestColumn: number
-        for(lowestColumn = 5; lowestColumn >= 0; lowestColumn--){
-            if(board[rowIndex][lowestColumn] === ""){
-                updateBoard(rowIndex, lowestColumn, currentPlayer)
-                return lowestColumn
+        let lowestColumnIndex: number
+        for(lowestColumnIndex = 5; lowestColumnIndex >= 0; lowestColumnIndex--){
+            if(board[rowIndex][lowestColumnIndex] === ""){
+                updateBoard(rowIndex, lowestColumnIndex, currentPlayer)
+                console.log(`Placed token: Row: ${rowIndex}, Column: ${lowestColumnIndex}`)
+                return lowestColumnIndex
             }
         }
-        return lowestColumn
-        console.log('Placed token: Row: ', rowIndex, 'Column: ', lowestColumn)
+        return lowestColumnIndex
     }
 
     const checkForMatch = (rowIndex: number, columnIndex: number): boolean => {
@@ -89,7 +89,7 @@ export const Gameboard = () => {
                 toggleColor();
             }
         }
-        console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
+        // console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
     }
 
 
