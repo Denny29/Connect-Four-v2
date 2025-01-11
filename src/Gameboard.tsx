@@ -8,7 +8,7 @@ export const Gameboard = () => {
         Array.from({ length: 6 }, () => Array(7).fill(""))
     )
     //Current player/color
-    const [currentPlayer, setCurrentPlayer] = useState("")
+    const [currentPlayer, setCurrentPlayer] = useState("red")
 
     //Helper method to change items in the board array
     const updateBoard = (rowIndex: number, columnIndex: number, color: string) => {
@@ -33,6 +33,7 @@ export const Gameboard = () => {
             updateBoard(rowIndex, columnIndex, currentPlayer)
             toggleColor();
         }
+        console.log("Clicked! Row: " + rowIndex, columnIndex)
     }
 
 
@@ -46,7 +47,10 @@ export const Gameboard = () => {
                 board.map((rows, rowIndex) => {
                     return <div className="rows">
                         {rows.map((color, columnIndex) => {
-                            return <Tile key={`${rowIndex}-${columnIndex}`} bgColor={color} clickProp={onTileClick(rowIndex, columnIndex)}/>
+                            return <Tile 
+                            key={`${rowIndex}-${columnIndex}`} 
+                            bgColor={color} 
+                            clickProp={() => onTileClick(rowIndex, columnIndex)}/>
                         })}
                     </div>
                 })
