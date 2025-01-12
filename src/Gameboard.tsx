@@ -31,17 +31,22 @@ export const Gameboard = () => {
         }
     }
     
-    //Places the piece as low as possible
-    const placeToken = (rowIndex: number, currentPlayer: string): number => {
-        let lowestColumnIndex: number
-        for(lowestColumnIndex = 5; lowestColumnIndex >= 0; lowestColumnIndex--){
-            if(board[rowIndex][lowestColumnIndex] === ""){
-                updateBoard(rowIndex, lowestColumnIndex, currentPlayer)
-                console.log(`Placed token: Row: ${rowIndex}, Column: ${lowestColumnIndex}`)
-                return lowestColumnIndex
+    /**
+     * 
+     * @param columnIndex 
+     * @param currentPlayer 
+     * @returns 
+     */
+    const placeToken = (columnIndex: number, currentPlayer: string): number => {
+        let lowestRowIndex: number
+        for(lowestRowIndex = totalRows - 1; lowestRowIndex >= 0; lowestRowIndex--){
+            if(board[lowestRowIndex][columnIndex] === ""){
+                updateBoard(lowestRowIndex, columnIndex, currentPlayer)
+                console.log(`Placed token: Row: ${lowestRowIndex}, Column: ${columnIndex}`)
+                return lowestRowIndex
             }
         }
-        return lowestColumnIndex
+        return lowestRowIndex
     }
 
     const checkForMatch = (rowIndex: number, columnIndex: number): boolean => {
@@ -84,14 +89,15 @@ export const Gameboard = () => {
         //Check if tile is empty
         if(board[rowIndex][columnIndex] === ""){
             if(!gameOver){
-                let actualColumnIndex = placeToken(rowIndex, currentPlayer)
+                let actualRowIndex = placeToken(columnIndex, currentPlayer)
                 // checkForWin(rowIndex, actualColumnIndex)
                 toggleColor();
             }
         }
-        // console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
+        console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
     }
 
+    console.log(board)
 
     return (
         <>
@@ -102,7 +108,8 @@ export const Gameboard = () => {
                         {rows.map((color, columnIndex) => {
                             return <Tile 
                             key={`${rowIndex}-${columnIndex}`} 
-                            bgColor={color} 
+                            bgColor={color}
+                            loc={`${rowIndex}-${columnIndex}`} 
                             clickProp={() => onTileClick(rowIndex, columnIndex)}/>
                         })}
                     </div>

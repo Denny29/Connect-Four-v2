@@ -41,7 +41,7 @@
 }
 
 #gameboard{
-  display: flex;
+  display: block;
   justify-content: center;
   background-color: rgb(50, 144, 221);
   width: 600px;
@@ -51,5 +51,6 @@
 }
 
 .rows{
+  display: flex;
   /* justify-content: space-between; */
 }
