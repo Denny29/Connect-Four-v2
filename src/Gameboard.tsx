@@ -4,8 +4,8 @@ import { Tile } from "./tile";
 export const Gameboard = () => {
     
     //Board contains the colors of the tiles
-    let totalRows = 7
-    let totalColumns = 6
+    let totalRows = 6
+    let totalColumns =7
     const [board, setBoard] = useState<string[][]>(
         Array.from({ length: totalRows }, () => Array(totalColumns).fill(""))
     )
