@@ -4,12 +4,11 @@ const useGameLogic = () => {
     //Board contains the colors of the tiles
     let totalRows = 6
     let totalColumns =7
+
     const [board, setBoard] = useState<string[][]>(
         Array.from({ length: totalRows }, () => Array(totalColumns).fill(""))
     )
-    //Current player/color
-    const [currentPlayer, setCurrentPlayer] = useState("red")
-
+    const [currentPlayerColor, setCurrentPlayerColor] = useState("red")
     const [gameOver, setGameOver] = useState(false)
 
     //Helper method to change items in the board array
@@ -21,30 +20,26 @@ const useGameLogic = () => {
 
     //Helper method to update the toggle colors
     const toggleColor = (): void => {
-        if(currentPlayer === "red"){
-            setCurrentPlayer("yellow")
-        }
-        else{
-            setCurrentPlayer("red")
-        }
+        setCurrentPlayerColor(currentPlayerColor === "red"? "yellow": "red")
     }
     
     /**
-     * 
+     * Searches for the lowest possible token placement, if column is full it 
+     * does nothing
      * @param columnIndex 
      * @param currentPlayer 
-     * @returns 
+     * @returns the lowestRowIndex AKA the row index where the token was placed
      */
     const placeToken = (columnIndex: number, currentPlayer: string): number => {
-        let lowestRowIndex: number
-        for(lowestRowIndex = totalRows - 1; lowestRowIndex >= 0; lowestRowIndex--){
+        for(let lowestRowIndex = totalRows - 1; lowestRowIndex >= 0; lowestRowIndex--){
             if(board[lowestRowIndex][columnIndex] === ""){
                 updateBoard(lowestRowIndex, columnIndex, currentPlayer)
                 console.log(`Placed token: Row: ${lowestRowIndex}, Column: ${columnIndex}`)
                 return lowestRowIndex
             }
         }
-        return lowestRowIndex
+        //Rreturning whatever cause the method shouldnt ever get down here
+        return -1
     }
 
     /**
@@ -54,19 +49,21 @@ const useGameLogic = () => {
      * @returns true or false depending on if the tile matches the current player
      */
     const tileMatch = (rowIndex: number, columnIndex: number): boolean => {
-        return board[rowIndex][columnIndex] === currentPlayer
+        return board[rowIndex][columnIndex] === currentPlayerColor
     }
 
+    const horizontalCheck = (): number => {
+        return 2
+    }
 
+    
 
     /**
      * Upon clicking a tile this method will look
      * three spaces around said tile and check if
      * there is a match.
-     * Lets have it return true if so
      */
     const checkForWin = (rowIndex: number, columnIndex: number): boolean => {
-        
         //totalMatchedTiles is always at least one, cause the tile clicked is the current player's color
         let totalMatchedTiles = 0;
         
@@ -86,16 +83,16 @@ const useGameLogic = () => {
         }
 
         //Check right of clicked tile
-        console.log(`${currentPlayer} has ${totalMatchedTiles} matches`)
+        console.log(`${currentPlayerColor} has ${totalMatchedTiles} matches`)
 
         if(totalMatchedTiles == 4){
-            console.log(`${currentPlayer} wins!`)
+            console.log(`${currentPlayerColor} wins!`)
             return true
         }
         return false
     }
 
-    return {board, currentPlayer, gameOver, toggleColor, placeToken, checkForWin}
+    return {board, currentPlayer: currentPlayerColor, gameOver, toggleColor, placeToken, checkForWin}
 }
 
 export default useGameLogic
