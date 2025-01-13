@@ -5,7 +5,7 @@ type TileProps = {
 }
 
 export const Tile = ({bgColor, clickProp, loc}: TileProps) => {
-    return <div className={`tile ${bgColor}`} onClick={clickProp}>
+    return <div role="button" tabIndex={1} className={`tile ${bgColor}`} onClick={clickProp}>
         <div className={`inner inner-${bgColor}`}>
             {loc}
         </div>
