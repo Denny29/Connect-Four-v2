@@ -49,11 +49,14 @@ export const Gameboard = () => {
         return lowestRowIndex
     }
 
-    const checkForMatch = (rowIndex: number, columnIndex: number): boolean => {
-        if(board[rowIndex][columnIndex] === currentPlayer){
-            return true
-        }
-        return false
+    /**
+     * Helper method to check if a tile matches the current player
+     * @param rowIndex 
+     * @param columnIndex 
+     * @returns true or false depending on if the tile matches the current player
+     */
+    const tileMatch = (rowIndex: number, columnIndex: number): boolean => {
+        return board[rowIndex][columnIndex] === currentPlayer
     }
 
 
@@ -65,23 +68,32 @@ export const Gameboard = () => {
      * Lets have it return true if so
      */
     const checkForWin = (rowIndex: number, columnIndex: number): boolean => {
-    
-        let numOfMatches = 0;
-
+        
+        //totalMatchedTiles is always at least one, cause the tile clicked is the current player's color
+        let totalMatchedTiles = 0;
+        
         //horizontal checks:
         //Check left of clicked tile
-        let columsChecked = 0;
-        while(columnIndex - columsChecked > 0){
-            if(checkForWin(rowIndex, columnIndex)){
-                numOfMatches++
+        let tilesChecked = 0;
+        while(columnIndex >= 0 && tilesChecked < 4){
+            if(tileMatch(rowIndex, columnIndex)){
+                totalMatchedTiles++
             }
-            columsChecked++;
-            if(columsChecked === 3)
+            else {
+                //No match so break the loop
                 break
+            }
+            tilesChecked++;
+            columnIndex--;
         }
-        //Check right of clicked tile
 
-        console.log(numOfMatches)
+        //Check right of clicked tile
+        console.log(`${currentPlayer} has ${totalMatchedTiles} matches`)
+
+        if(totalMatchedTiles == 4){
+            console.log(`${currentPlayer} wins!`)
+            return true
+        }
         return false
     }
 
@@ -90,14 +102,12 @@ export const Gameboard = () => {
         if(board[rowIndex][columnIndex] === ""){
             if(!gameOver){
                 let actualRowIndex = placeToken(columnIndex, currentPlayer)
-                // checkForWin(rowIndex, actualColumnIndex)
-                toggleColor();
+                checkForWin(actualRowIndex, columnIndex)
+                // toggleColor();
             }
         }
-        console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
+        // console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
     }
-
-    console.log(board)
 
     return (
         <>
