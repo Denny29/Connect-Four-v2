@@ -31,7 +31,8 @@ const useGameLogic = () => {
      * @returns the lowestRowIndex AKA the row index where the token was placed
      */
     const placeToken = (columnIndex: number, currentPlayer: string): number => {
-        for(let lowestRowIndex = totalRows - 1; lowestRowIndex >= 0; lowestRowIndex--){
+        let lowestRowIndex: number
+        for(lowestRowIndex = totalRows - 1; lowestRowIndex >= 0; lowestRowIndex--){
             if(board[lowestRowIndex][columnIndex] === ""){
                 updateBoard(lowestRowIndex, columnIndex, currentPlayer)
                 console.log(`Placed token: Row: ${lowestRowIndex}, Column: ${columnIndex}`)
@@ -39,7 +40,7 @@ const useGameLogic = () => {
             }
         }
         //Rreturning whatever cause the method shouldnt ever get down here
-        return -1
+        return lowestRowIndex
     }
 
     /**
@@ -85,7 +86,7 @@ const useGameLogic = () => {
     const verticalCheck = (rowIndex: number, columnIndex: number): number => {
         let tilesChecked = 0
         let matchedTiles = 0;
-        while(rowIndex < totalRows && tilesChecked < 4){
+        while((rowIndex >= 0 && rowIndex < totalRows) && tilesChecked < 4){
             if(tileMatch(rowIndex, columnIndex)){
                 matchedTiles++
                 console.log(`Inside vertical check tilesChecked:${tilesChecked}`)
@@ -129,8 +130,8 @@ const useGameLogic = () => {
         console.log(`${currentPlayerColor} has ${totalMatchedTiles} horizontal matches`)
         didPlayerWin(totalMatchedTiles)
 
-        //Reset totalMatchedTiles to -1 in between checks
-        totalMatchedTiles = -1;
+        //Reset totalMatchedTiles to 0 
+        totalMatchedTiles = 0;
 
         //vertical check, no need to check up.
         totalMatchedTiles += verticalCheck(rowIndex, columnIndex)
