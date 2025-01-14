@@ -11,7 +11,12 @@ export const Gameboard = () => {
             if(!gameOver){
                 let actualRowIndex = placeToken(columnIndex, currentPlayer)
                 checkForWin(actualRowIndex, columnIndex)
-                toggleColor();
+                //Check again if game is over so the color doesn't switch
+                if(!gameOver)
+                    toggleColor();
+            }
+            else{
+                alert(`${currentPlayer} Wins!!`)
             }
         }
         console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)

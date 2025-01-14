@@ -139,7 +139,7 @@ const useGameLogic = () => {
     const didPlayerWin = (totalMatchedTiles: number) => {
         if(totalMatchedTiles == 4){
             console.log(`${currentPlayerColor} wins!`)
-            return true
+            setGameOver(true)
         }
     }
 
@@ -186,8 +186,8 @@ const useGameLogic = () => {
         //top-left to bottom-right diagonal checks
         totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "top-left")
         totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "bottom-right")
-        console.log(`${currentPlayerColor} has ${totalMatchedTiles} top-right to bottom-left diagonal matches`)
-        didPlayerWin(totalMatchedTiles)
+        // console.log(`${currentPlayerColor} has ${totalMatchedTiles} top-right to bottom-left diagonal matches`)
+        (totalMatchedTiles)
 
         return false
     }
