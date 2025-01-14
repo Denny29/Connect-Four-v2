@@ -14,7 +14,7 @@ export const Gameboard = () => {
                 toggleColor();
             }
         }
-        // console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
+        console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
     }
 
     return (

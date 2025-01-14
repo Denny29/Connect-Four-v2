@@ -31,7 +31,8 @@ const useGameLogic = () => {
      * @returns the lowestRowIndex AKA the row index where the token was placed
      */
     const placeToken = (columnIndex: number, currentPlayer: string): number => {
-        for(let lowestRowIndex = totalRows - 1; lowestRowIndex >= 0; lowestRowIndex--){
+        let lowestRowIndex: number
+        for(lowestRowIndex = totalRows - 1; lowestRowIndex >= 0; lowestRowIndex--){
             if(board[lowestRowIndex][columnIndex] === ""){
                 updateBoard(lowestRowIndex, columnIndex, currentPlayer)
                 console.log(`Placed token: Row: ${lowestRowIndex}, Column: ${columnIndex}`)
@@ -39,7 +40,7 @@ const useGameLogic = () => {
             }
         }
         //Rreturning whatever cause the method shouldnt ever get down here
-        return -1
+        return lowestRowIndex
     }
 
     /**
@@ -52,11 +53,95 @@ const useGameLogic = () => {
         return board[rowIndex][columnIndex] === currentPlayerColor
     }
 
-    const horizontalCheck = (): number => {
-        return 2
+    /**
+     * These methods are going to be a little redundant, but I'm going to waste
+     * too much time otherwise
+     * @param rowIndex 
+     * @param columnIndex 
+     * @param direction 
+     * @returns The amount of matched tiles in that direction
+     */
+    const horizontalCheck = (rowIndex: number, columnIndex: number, direction: string): number => {
+        let tilesChecked = 0
+        let matchedTiles = 0;
+
+        while((columnIndex >= 0 && columnIndex < totalColumns) && tilesChecked < 4){
+            if(tileMatch(rowIndex, columnIndex)){
+                matchedTiles++
+            }
+            else {
+                //No match so break the loop
+                break
+            }
+            tilesChecked++;
+
+            if(direction === "left") 
+                columnIndex--;
+            else
+                columnIndex++;
+        }
+        return matchedTiles
     }
 
-    
+    const verticalCheck = (rowIndex: number, columnIndex: number): number => {
+        let tilesChecked = 0
+        let matchedTiles = 0;
+        while((rowIndex >= 0 && rowIndex < totalRows) && tilesChecked < 4){
+            if(tileMatch(rowIndex, columnIndex)){
+                matchedTiles++
+                console.log(`Inside vertical check tilesChecked:${tilesChecked}`)
+            }
+            else {
+                //No match so break the loop
+                break
+            }
+            tilesChecked++;
+
+            rowIndex++;
+        }
+        return matchedTiles
+    }
+
+    const diagonalCheck = (rowIndex: number, columnIndex: number, direction: string): number => {
+        let tilesChecked = 0
+        let matchedTiles = 0;
+        while((rowIndex >= 0 && rowIndex < totalRows) && (columnIndex >= 0 && columnIndex < totalColumns) && tilesChecked < 4){
+            if(tileMatch(rowIndex, columnIndex)){
+                matchedTiles++
+                console.log(`Inside diagonal check tilesChecked:${tilesChecked}`)
+            }
+            else {
+                //No match so break the loop
+                break
+            }
+            tilesChecked++;
+            if(direction === "top-right"){
+                rowIndex--;
+                columnIndex++;
+            }
+            else if(direction === "top-left"){
+                rowIndex--;
+                columnIndex--;
+            }
+            else if(direction === "bottom-right"){
+                rowIndex++;
+                columnIndex++;
+            }
+            else if(direction === "bottom-left"){
+                rowIndex++;
+                columnIndex--;
+            }
+        }
+        return matchedTiles
+    }
+
+    //Helper method to check if a plyer got 4 tiles
+    const didPlayerWin = (totalMatchedTiles: number) => {
+        if(totalMatchedTiles == 4){
+            console.log(`${currentPlayerColor} wins!`)
+            return true
+        }
+    }
 
     /**
      * Upon clicking a tile this method will look
@@ -64,31 +149,46 @@ const useGameLogic = () => {
      * there is a match.
      */
     const checkForWin = (rowIndex: number, columnIndex: number): boolean => {
-        //totalMatchedTiles is always at least one, cause the tile clicked is the current player's color
-        let totalMatchedTiles = 0;
+        /**
+         * totalMatchedTiles needs to start at -1 as totalMatchedTiles
+         * includes the clicked tile. This is an issue because I'm going to run
+         * the check methods twice for each direction, which would messs up the conditions
+         */
+        let totalMatchedTiles = -1;
         
         //horizontal checks:
-        //Check left of clicked tile
-        let tilesChecked = 0;
-        while(columnIndex >= 0 && tilesChecked < 4){
-            if(tileMatch(rowIndex, columnIndex)){
-                totalMatchedTiles++
-            }
-            else {
-                //No match so break the loop
-                break
-            }
-            tilesChecked++;
-            columnIndex--;
-        }
+        totalMatchedTiles += horizontalCheck(rowIndex, columnIndex, "left")
+        totalMatchedTiles += horizontalCheck(rowIndex, columnIndex, "right")
 
-        //Check right of clicked tile
-        console.log(`${currentPlayerColor} has ${totalMatchedTiles} matches`)
+        // console.log(`${currentPlayerColor} has ${totalMatchedTiles} horizontal matches`)
+        didPlayerWin(totalMatchedTiles)
 
-        if(totalMatchedTiles == 4){
-            console.log(`${currentPlayerColor} wins!`)
-            return true
-        }
+        //Reset totalMatchedTiles to 0 
+        totalMatchedTiles = 0;
+
+        //vertical check, no need to check up.
+        totalMatchedTiles += verticalCheck(rowIndex, columnIndex)
+        // console.log(`${currentPlayerColor} has ${totalMatchedTiles} vertical matches`)
+        didPlayerWin(totalMatchedTiles)
+
+        //Reset totalMatchedTiles to -1 
+        totalMatchedTiles = -1;
+
+        //top-right to bottom-left diagonal checks
+        totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "top-right")
+        totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "bottom-left")
+        // console.log(`${currentPlayerColor} has ${totalMatchedTiles} top-right to bottom-left diagonal matches`)
+        didPlayerWin(totalMatchedTiles)
+
+        //Reset totalMatchedTiles to -1 
+        totalMatchedTiles = -1;
+
+        //top-left to bottom-right diagonal checks
+        totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "top-left")
+        totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "bottom-right")
+        console.log(`${currentPlayerColor} has ${totalMatchedTiles} top-right to bottom-left diagonal matches`)
+        didPlayerWin(totalMatchedTiles)
+
         return false
     }
 
