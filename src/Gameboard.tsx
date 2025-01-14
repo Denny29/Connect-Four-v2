@@ -15,9 +15,6 @@ export const Gameboard = () => {
                 if(!gameOver)
                     toggleColor();
             }
-            else{
-                alert(`${currentPlayer} Wins!!`)
-            }
         }
         console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
     }
