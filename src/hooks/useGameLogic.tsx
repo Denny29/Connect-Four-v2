@@ -136,11 +136,12 @@ const useGameLogic = () => {
     }
 
     //Helper method to check if a plyer got 4 tiles
-    const didPlayerWin = (totalMatchedTiles: number) => {
-        if(totalMatchedTiles == 4){
+    const didPlayerWin = (totalMatchedTiles: number): boolean => {
+        if(totalMatchedTiles == 4){      
             setGameOver(true)
-            return alert(`${currentPlayerColor} Wins!!`)
+            return true
         }
+        return false
     }
 
     /**
@@ -148,7 +149,7 @@ const useGameLogic = () => {
      * three spaces around said tile and check if
      * there is a match.
      */
-    const checkForWin = (rowIndex: number, columnIndex: number) => {
+    const checkForWin = (rowIndex: number, columnIndex: number):boolean => {
         /**
          * totalMatchedTiles needs to start at -1 as totalMatchedTiles
          * includes the clicked tile. This is an issue because I'm going to run
@@ -161,7 +162,8 @@ const useGameLogic = () => {
         totalMatchedTiles += horizontalCheck(rowIndex, columnIndex, "right")
 
         // console.log(`${currentPlayerColor} has ${totalMatchedTiles} horizontal matches`)
-        didPlayerWin(totalMatchedTiles)
+        if (didPlayerWin(totalMatchedTiles))
+            return true
 
         //Reset totalMatchedTiles to 0 
         totalMatchedTiles = 0;
@@ -169,7 +171,8 @@ const useGameLogic = () => {
         //vertical check, no need to check up.
         totalMatchedTiles += verticalCheck(rowIndex, columnIndex)
         // console.log(`${currentPlayerColor} has ${totalMatchedTiles} vertical matches`)
-        didPlayerWin(totalMatchedTiles)
+        if (didPlayerWin(totalMatchedTiles))
+            return true
 
         //Reset totalMatchedTiles to -1 
         totalMatchedTiles = -1;
@@ -178,7 +181,8 @@ const useGameLogic = () => {
         totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "top-right")
         totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "bottom-left")
         // console.log(`${currentPlayerColor} has ${totalMatchedTiles} top-right to bottom-left diagonal matches`)
-        didPlayerWin(totalMatchedTiles)
+        if (didPlayerWin(totalMatchedTiles))
+            return true
 
         //Reset totalMatchedTiles to -1 
         totalMatchedTiles = -1;
@@ -187,11 +191,12 @@ const useGameLogic = () => {
         totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "top-left")
         totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "bottom-right")
         // console.log(`${currentPlayerColor} has ${totalMatchedTiles} top-right to bottom-left diagonal matches`)
-        didPlayerWin(totalMatchedTiles)
-
+        if (didPlayerWin(totalMatchedTiles))
+            return true
+        return false
     }
 
-    return {board, currentPlayer: currentPlayerColor, gameOver, toggleColor, placeToken, checkForWin}
+    return {board, setBoard, currentPlayer: currentPlayerColor, gameOver, setGameOver, toggleColor, placeToken, checkForWin}
 }
 
 export default useGameLogic
