@@ -53,69 +53,31 @@ const useGameLogic = () => {
         return board[rowIndex][columnIndex] === currentPlayerColor
     }
 
-    /**
-     * These methods are going to be a little redundant, but I'm going to waste
-     * too much time otherwise
-     * @param rowIndex 
-     * @param columnIndex 
-     * @param direction 
-     * @returns The amount of matched tiles in that direction
-     */
-    const horizontalCheck = (rowIndex: number, columnIndex: number, direction: string): number => {
+    const omniCheck = (rowIndex: number, columnIndex: number, direction: string) => {
         let tilesChecked = 0
         let matchedTiles = 0;
 
-        while((columnIndex >= 0 && columnIndex < totalColumns) && tilesChecked < 4){
-            if(tileMatch(rowIndex, columnIndex)){
-                matchedTiles++
-            }
-            else {
-                //No match so break the loop
-                break
-            }
-            tilesChecked++;
-
-            if(direction === "left") 
-                columnIndex--;
-            else
-                columnIndex++;
-        }
-        return matchedTiles
-    }
-
-    const verticalCheck = (rowIndex: number, columnIndex: number): number => {
-        let tilesChecked = 0
-        let matchedTiles = 0;
-        while((rowIndex >= 0 && rowIndex < totalRows) && tilesChecked < 4){
-            if(tileMatch(rowIndex, columnIndex)){
-                matchedTiles++
-                console.log(`Inside vertical check tilesChecked:${tilesChecked}`)
-            }
-            else {
-                //No match so break the loop
-                break
-            }
-            tilesChecked++;
-
-            rowIndex++;
-        }
-        return matchedTiles
-    }
-
-    const diagonalCheck = (rowIndex: number, columnIndex: number, direction: string): number => {
-        let tilesChecked = 0
-        let matchedTiles = 0;
         while((rowIndex >= 0 && rowIndex < totalRows) && (columnIndex >= 0 && columnIndex < totalColumns) && tilesChecked < 4){
             if(tileMatch(rowIndex, columnIndex)){
                 matchedTiles++
-                console.log(`Inside diagonal check tilesChecked:${tilesChecked}`)
+                console.log(`Inside Omni check tilesChecked:${tilesChecked}`)
             }
             else {
                 //No match so break the loop
                 break
             }
             tilesChecked++;
-            if(direction === "top-right"){
+
+            //Horizontal check logic
+            if(direction === "left") 
+                columnIndex--;
+            else if(direction ==="right")
+                columnIndex++;
+            //Veritcal check logic
+            else if(direction === "down")
+                rowIndex++;
+            //Digonal check logic
+            else if(direction === "top-right"){
                 rowIndex--;
                 columnIndex++;
             }
@@ -133,6 +95,7 @@ const useGameLogic = () => {
             }
         }
         return matchedTiles
+
     }
 
     //Helper method to check if a plyer got 4 tiles
@@ -158,8 +121,8 @@ const useGameLogic = () => {
         let totalMatchedTiles = -1;
         
         //horizontal checks:
-        totalMatchedTiles += horizontalCheck(rowIndex, columnIndex, "left")
-        totalMatchedTiles += horizontalCheck(rowIndex, columnIndex, "right")
+        totalMatchedTiles += omniCheck(rowIndex, columnIndex, "left")
+        totalMatchedTiles += omniCheck(rowIndex, columnIndex, "right")
 
         // console.log(`${currentPlayerColor} has ${totalMatchedTiles} horizontal matches`)
         if (didPlayerWin(totalMatchedTiles))
@@ -169,7 +132,7 @@ const useGameLogic = () => {
         totalMatchedTiles = 0;
 
         //vertical check, no need to check up.
-        totalMatchedTiles += verticalCheck(rowIndex, columnIndex)
+        totalMatchedTiles += omniCheck(rowIndex, columnIndex, "down")
         // console.log(`${currentPlayerColor} has ${totalMatchedTiles} vertical matches`)
         if (didPlayerWin(totalMatchedTiles))
             return true
@@ -178,8 +141,8 @@ const useGameLogic = () => {
         totalMatchedTiles = -1;
 
         //top-right to bottom-left diagonal checks
-        totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "top-right")
-        totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "bottom-left")
+        totalMatchedTiles += omniCheck(rowIndex, columnIndex, "top-right")
+        totalMatchedTiles += omniCheck(rowIndex, columnIndex, "bottom-left")
         // console.log(`${currentPlayerColor} has ${totalMatchedTiles} top-right to bottom-left diagonal matches`)
         if (didPlayerWin(totalMatchedTiles))
             return true
@@ -188,8 +151,8 @@ const useGameLogic = () => {
         totalMatchedTiles = -1;
 
         //top-left to bottom-right diagonal checks
-        totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "top-left")
-        totalMatchedTiles += diagonalCheck(rowIndex, columnIndex, "bottom-right")
+        totalMatchedTiles += omniCheck(rowIndex, columnIndex, "top-left")
+        totalMatchedTiles += omniCheck(rowIndex, columnIndex, "bottom-right")
         // console.log(`${currentPlayerColor} has ${totalMatchedTiles} top-right to bottom-left diagonal matches`)
         if (didPlayerWin(totalMatchedTiles))
             return true
