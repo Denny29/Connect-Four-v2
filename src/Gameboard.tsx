@@ -1,20 +1,28 @@
 import { Tile } from "./tile";
 import useGameLogic from "./hooks/useGameLogic";
+import GameStatus from "./GameStatus";
 
 export const Gameboard = () => {
-    
-    const {board, currentPlayer, gameOver, toggleColor, placeToken, checkForWin} = useGameLogic()
+    let totalRows = 6
+    let totalColumns =7
+
+    const {board, setBoard, currentPlayer, gameOver, setGameOver, toggleColor, placeToken, checkForWin} = useGameLogic()
 
     const onTileClick = (rowIndex: number, columnIndex: number): void => {
         //Check if tile is empty
         if(board[rowIndex][columnIndex] === ""){
             if(!gameOver){
                 let actualRowIndex = placeToken(columnIndex, currentPlayer)
-                checkForWin(actualRowIndex, columnIndex)
-                toggleColor();
+                if (!checkForWin(actualRowIndex, columnIndex))
+                    toggleColor();
             }
         }
         console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
+    }
+
+    const restartGame = (): void => {
+        setGameOver(false)
+        setBoard(Array.from({ length: totalRows }, () => Array(totalColumns).fill("")))
     }
 
     return (
@@ -33,9 +41,9 @@ export const Gameboard = () => {
                     </div>
                 })
             }
-            
+            <br></br>
+            <GameStatus currentPlayer={currentPlayer} gameOver={gameOver} restartGame={restartGame}/>
             </div>
-            {/* <h1>Current Player: {currentPlayer}</h1> */}
         </>
     )
 }

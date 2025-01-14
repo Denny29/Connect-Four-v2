@@ -54,3 +54,11 @@
   display: flex;
   /* justify-content: space-between; */
 }
+
+.red-status{
+  color: red;
+}
+
+.yellow-status{
+  color: rgba(156, 156, 31, 0.384);
+}
