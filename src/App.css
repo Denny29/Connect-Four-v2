@@ -24,19 +24,19 @@
   border-radius: 30px;
 }
 
-.red{
-  background-color: red;
+.Red{
+  background-color: Red;
 }
 
-.inner-red{
+.inner-Red{
   background-color: rgb(189, 14, 14);
 }
 
-.yellow{
-  background-color: yellow;
+.Yellow{
+  background-color: Yellow;
 }
 
-.inner-yellow{
+.inner-Yellow{
   background-color: rgba(156, 156, 31, 0.384);
 }
 
@@ -45,7 +45,7 @@
   justify-content: center;
   background-color: rgb(50, 144, 221);
   width: 600px;
-  height: 500px;
+  height: 525px;
   padding: 20px;
   
 }
@@ -55,10 +55,10 @@
   /* justify-content: space-between; */
 }
 
-.red-status{
-  color: red;
+.Red-status{
+  color: Red;
 }
 
-.yellow-status{
-  color: rgba(156, 156, 31, 0.384);
+.Yellow-status{
+  color: gold;
 }

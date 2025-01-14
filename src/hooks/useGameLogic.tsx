@@ -8,7 +8,7 @@ const useGameLogic = () => {
     const [board, setBoard] = useState<string[][]>(
         Array.from({ length: totalRows }, () => Array(totalColumns).fill(""))
     )
-    const [currentPlayerColor, setCurrentPlayerColor] = useState("red")
+    const [currentPlayerColor, setCurrentPlayerColor] = useState("Red")
     const [gameOver, setGameOver] = useState(false)
 
     //Helper method to change items in the board array
@@ -20,7 +20,7 @@ const useGameLogic = () => {
 
     //Helper method to update the toggle colors
     const toggleColor = (): void => {
-        setCurrentPlayerColor(currentPlayerColor === "red"? "yellow": "red")
+        setCurrentPlayerColor(currentPlayerColor === "Red"? "Yellow": "Red")
     }
     
     /**
