@@ -60,7 +60,6 @@ const useGameLogic = () => {
         while((rowIndex >= 0 && rowIndex < totalRows) && (columnIndex >= 0 && columnIndex < totalColumns) && tilesChecked < 4){
             if(tileMatch(rowIndex, columnIndex)){
                 matchedTiles++
-                console.log(`Inside Omni check tilesChecked:${tilesChecked}`)
             }
             else {
                 //No match so break the loop
