@@ -6,8 +6,8 @@ export const Gameboard = () => {
     let totalRows = 6
     let totalColumns =7
 
-    const {board, setBoard, currentPlayer, gameOver, setGameOver, toggleColor, placeToken, checkForWin} = useGameLogic()
-
+    const {board, setBoard, currentPlayer, gameOver, setGameOver, moveCounter, setMoveCounter, toggleColor, placeToken, checkForWin} = useGameLogic()
+    
     const onTileClick = (rowIndex: number, columnIndex: number): void => {
         //Check if tile is empty
         if(board[rowIndex][columnIndex] === ""){
@@ -17,10 +17,11 @@ export const Gameboard = () => {
                     toggleColor();
             }
         }
-        console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
+        // console.log(`Clicked! Row: ${rowIndex}, Column: ${columnIndex}`)
     }
 
     const restartGame = (): void => {
+        setMoveCounter(1)
         setGameOver(false)
         setBoard(Array.from({ length: totalRows }, () => Array(totalColumns).fill("")))
     }
@@ -42,7 +43,7 @@ export const Gameboard = () => {
                 })
             }
             <br></br>
-            <GameStatus currentPlayer={currentPlayer} gameOver={gameOver} restartGame={restartGame}/>
+            <GameStatus currentPlayer={currentPlayer} gameOver={gameOver} moveCounter={moveCounter} restartGame={restartGame}/>
             </div>
         </>
     )

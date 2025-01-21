@@ -32,6 +32,8 @@ const useGameLogic = () => {
      * @returns the lowestRowIndex AKA the row index where the token was placed
      */
     const placeToken = (columnIndex: number, currentPlayer: string): number => {
+        setMoveCounter(moveCounter + 1)
+        console.log(moveCounter)
         let lowestRowIndex: number
         for(lowestRowIndex = totalRows - 1; lowestRowIndex >= 0; lowestRowIndex--){
             if(board[lowestRowIndex][columnIndex] === ""){
@@ -116,6 +118,7 @@ const useGameLogic = () => {
     const checkForWin = (rowIndex: number, columnIndex: number):boolean => {
         //Check for draw
         if(moveCounter == 42){
+            setGameOver(true)
             return true
         }
 
