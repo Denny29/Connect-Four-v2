@@ -10,6 +10,7 @@ const useGameLogic = () => {
     )
     const [currentPlayerColor, setCurrentPlayerColor] = useState("Red")
     const [gameOver, setGameOver] = useState(false)
+    const [moveCounter, setMoveCounter] = useState(0)
 
     //Helper method to change items in the board array
     const updateBoard = (rowIndex: number, columnIndex: number, color: string) => {
@@ -35,7 +36,7 @@ const useGameLogic = () => {
         for(lowestRowIndex = totalRows - 1; lowestRowIndex >= 0; lowestRowIndex--){
             if(board[lowestRowIndex][columnIndex] === ""){
                 updateBoard(lowestRowIndex, columnIndex, currentPlayer)
-                console.log(`Placed token: Row: ${lowestRowIndex}, Column: ${columnIndex}`)
+                // console.log(`Placed token: Row: ${lowestRowIndex}, Column: ${columnIndex}`)
                 return lowestRowIndex
             }
         }
@@ -93,13 +94,14 @@ const useGameLogic = () => {
                 columnIndex--;
             }
         }
+        // console.log("direction: " + direction + " matchedTiles: " + matchedTiles)
         return matchedTiles
 
     }
 
     //Helper method to check if a plyer got 4 tiles
     const didPlayerWin = (totalMatchedTiles: number): boolean => {
-        if(totalMatchedTiles == 4){      
+        if(totalMatchedTiles >= 4){      
             setGameOver(true)
             return true
         }
@@ -112,6 +114,11 @@ const useGameLogic = () => {
      * there is a match.
      */
     const checkForWin = (rowIndex: number, columnIndex: number):boolean => {
+        //Check for draw
+        if(moveCounter == 42){
+            return true
+        }
+
         /**
          * totalMatchedTiles needs to start at -1 as totalMatchedTiles
          * includes the clicked tile. This is an issue because I'm going to run
@@ -158,7 +165,7 @@ const useGameLogic = () => {
         return false
     }
 
-    return {board, setBoard, currentPlayer: currentPlayerColor, gameOver, setGameOver, toggleColor, placeToken, checkForWin}
+    return {board, setBoard, currentPlayer: currentPlayerColor, gameOver, setGameOver, moveCounter, setMoveCounter, toggleColor, placeToken, checkForWin}
 }
 
 export default useGameLogic
