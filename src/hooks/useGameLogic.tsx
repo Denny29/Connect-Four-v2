@@ -118,7 +118,7 @@ const useGameLogic = () => {
     const checkForWin = (rowIndex: number, columnIndex: number):boolean => {
         //Check for draw
         if(moveCounter == 42){
-            setGameOver(true)
+            // setGameOver(true)
             return true
         }
 
