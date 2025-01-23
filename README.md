@@ -2,7 +2,7 @@
 
 Built using React.js and Typescript
 
-
+![Draw](https://github.com/Denny29/Connect-Four-v2/blob/main/src/assets/Connect%20Four%20Draw.png)
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
