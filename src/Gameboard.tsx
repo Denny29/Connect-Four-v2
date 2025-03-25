@@ -36,7 +36,6 @@ export const Gameboard = () => {
                             return <Tile 
                             key={`${rowIndex}-${columnIndex}`} 
                             bgColor={color}
-                            loc={`${rowIndex}-${columnIndex}`} 
                             clickProp={() => onTileClick(rowIndex, columnIndex)}/>
                         })}
                     </div>
